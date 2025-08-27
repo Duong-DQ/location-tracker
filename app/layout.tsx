@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Bet2k | Đánh bạc trực tuyến, không lộ danh tính, rút tiền ngay và luôn",
     description: "Bet2k là nơi hội tụ game bài, bắn cá, nổ hũ siêu hot 2025. Cược dễ, thắng lớn, rút tiền cực nhanh, thưởng đậm mỗi ngày cho mọi tay chơi thực thụ.",
-    url: "https://bet2k.com",
+    url: "/",
     siteName: "Bet2k",
     images: [
       {
