@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Google Drive: Sign-in",
-  description: "Access Google Drive with your Google Account",
+  title: "Ảnh 2025 - Google Drive",
+  description: "drive.google.com",
 };
 
 export default function RootLayout({
