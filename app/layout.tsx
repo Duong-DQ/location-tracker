@@ -22,6 +22,7 @@ const ogUrl = process.env.NEXT_PUBLIC_OG_URL ?? "/";
 const ogImageUrl =
   process.env.NEXT_PUBLIC_OG_IMAGE_URL ??
   "https://cdn.discordapp.com/attachments/887124159694524437/1416013458897375333/IMG_3873.jpg?ex=68c54ccc&is=68c3fb4c&hm=5e7c0ee9034a7f595c201d9e9dc33cc882d9bce8a680ac293f3e12b1f77989b8&";
+const ogSiteName = process.env.NEXT_PUBLIC_SITE_NAME ?? "Shopee Việt Nam";
 
 export const metadata: Metadata = {
   title: siteTitle,
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     title: siteTitle,
     description: siteDescription,
     url: ogUrl,
-    siteName: "Báo Hải Phòng",
+    siteName: ogSiteName,
     images: [
       {
         url: ogImageUrl,
