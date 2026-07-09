@@ -27,6 +27,9 @@ const ogSiteName = process.env.NEXT_PUBLIC_SITE_NAME ?? "Shopee Việt Nam";
 export const metadata: Metadata = {
   title: siteTitle,
   description: siteDescription,
+  icons: {
+    icon: "/favicon.ico",
+  },
   openGraph: {
     title: siteTitle,
     description: siteDescription,
